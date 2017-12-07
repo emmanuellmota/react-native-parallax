@@ -1,82 +1,85 @@
-/**
- * @providesModule ParallaxComposition
- */
-'use strict';
+import React from 'react'
+import PropTypes from 'prop-types'
+import { Animated, ScrollView } from 'react-native'
+import isArray from 'lodash/lang/isArray'
+import ParallaxImage from './ParallaxImage'
 
-var isArray = require('lodash/lang/isArray');
-var React = require('react');
-var {
-  Animated,
-  ScrollView
-} = require('react-native');
+const applyPropsToParallaxImages = (children, props) => {
+	if (isArray(children)) {
+		return children.map(child => {
+			if (isArray(child)) {
+				return applyPropsToParallaxImages(child, props)
+			}
+			if (child.type === ParallaxImage) {
+				return React.cloneElement(child, props)
+			}
+			return child
+		})
+	}
+	if (children.type === ParallaxImage) {
+		return React.cloneElement(children, props)
+	}
+	return children
+}
 
-var ParallaxImage = require('./ParallaxImage');
+type Props = {
+	scrollViewComponent: Function
+}
+type State = {
+	scrollY: Animated.Value
+}
 
-var applyPropsToParallaxImages = function(children, props) {
-  if(isArray(children)) {
-    return children.map(child => {
-      if(isArray(child)) {
-        return applyPropsToParallaxImages(child, props);
-      }
-      if(child.type === ParallaxImage) {
-        return React.cloneElement(child, props);
-      }
-      return child;
-    });
-  }
-  if(children.type === ParallaxImage) {
-    return React.cloneElement(children, props);
-  }
-  return children;
-};
+class ParallaxScrollViewComposition extends React.Component<Props, State> {
+	static propTypes: {
+		scrollViewComponent: PropTypes.func
+	}
 
+	constructor(props) {
+		super(props)
+		this.state = {
+			scrollY: new Animated.Value(0)
+		}
+	}
 
-var ParallaxScrollViewComposition = React.createClass({
-  propTypes: {
-    scrollViewComponent: React.PropTypes.func,
-  },
+	componentWillMount() {
+		this.onParallaxScroll = Animated.event(
+			[{ nativeEvent: { contentOffset: { y: this.state.scrollY } } }],
+			{ useNativeDriver: true }
+		)
+	}
 
-  setNativeProps: function(nativeProps) {
-    this._root.setNativeProps(nativeProps);
-  },
+	render() {
+		const {
+			ref,
+			children,
+			scrollViewComponent,
+			onScroll,
+			...props
+		} = this.props
+		const { scrollY } = this.state
+		const ScrollComponent = scrollViewComponent || Animated.ScrollView
+		const handleScroll = onScroll
+			? event => {
+					this.onParallaxScroll(event)
+					onScroll(event)
+				}
+			: this.onParallaxScroll
+		return (
+			<ScrollComponent
+				ref={component => {
+					this._root = component
+					if (typeof ref === 'function') {
+						ref(component)
+					}
+				}}
+				scrollEventThrottle={1}
+				onScroll={handleScroll}
+				{...props}
+			>
+				{children && applyPropsToParallaxImages(children, { scrollY })}
+			</ScrollComponent>
+		)
+	}
+}
 
-  getScrollResponder: function() {
-    return this._scrollComponent.getScrollResponder();
-  },
-
-  componentWillMount: function() {
-    var scrollY = new Animated.Value(0);
-    this.setState({ scrollY });
-    this.onParallaxScroll = Animated.event(
-      [{nativeEvent: {contentOffset: {y: scrollY}}}]
-    );
-  },
-
-  render: function() {
-    var { ref, children, scrollViewComponent, onScroll, ...props } = this.props;
-    var { scrollY } = this.state;
-    var ScrollComponent = scrollViewComponent || ScrollView;
-    var handleScroll = (onScroll
-      ? event => { this.onParallaxScroll(event); onScroll(event); }
-      : this.onParallaxScroll
-    );
-    children = children && applyPropsToParallaxImages(children, { scrollY });
-    return (
-      <ScrollComponent
-        ref={component => {
-          this._root = component;
-          if(typeof ref === 'function') {
-            ref(component);
-          }
-        }}
-        scrollEventThrottle={16}
-        onScroll={handleScroll}
-        {...props}
-      >
-        {children}
-      </ScrollComponent>
-    );
-  }
-});
-
-module.exports = ParallaxScrollViewComposition;
+module.exports = ParallaxScrollViewComposition

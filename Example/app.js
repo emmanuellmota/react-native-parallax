@@ -1,100 +1,109 @@
 /**
  * Sample React Native App
  * https://github.com/facebook/react-native
+ * @flow
  */
-'use strict';
 
-var React = require('react');
-var {
+import React, { Component } from 'react'
+import {
   StyleSheet,
   Text,
   View,
-  ScrollView,
   Dimensions,
-  PixelRatio,
-} = require('react-native');
+  PixelRatio
+} from 'react-native'
 
-var Parallax = require('react-native-parallax');
+import Parallax from 'react-native-parallax'
 
-var IMAGE_WIDTH = Dimensions.get('window').width;
-var IMAGE_HEIGHT = IMAGE_WIDTH / 2;
-var PIXEL_RATIO = PixelRatio.get();
-var PARALLAX_FACTOR = 0.3;
+var IMAGE_WIDTH = Dimensions.get('window').width
+var IMAGE_HEIGHT = 500
+var PIXEL_RATIO = PixelRatio.get()
+var PARALLAX_FACTOR = 1
 
-var IMAGE_URI_PREFIX = 'http://loremflickr.com/' + (IMAGE_WIDTH * PIXEL_RATIO) + '/' + Math.round(IMAGE_HEIGHT * (1 + PARALLAX_FACTOR * 2) * PIXEL_RATIO) + '/'
+var IMAGE_URI_PREFIX = 'https://loremflickr.com/' + (IMAGE_WIDTH * PIXEL_RATIO) + '/' + Math.round(IMAGE_HEIGHT * (1 + PARALLAX_FACTOR * 2) * PIXEL_RATIO) + '/'
 
 var SECTIONS = [
   {
     title: '(=^ ◡ ^=)',
-    keyword: 'cat',
+    keyword: 'cat'
   },
   {
     title: 'ｏ（Ｕ・ω・）⊃',
-    keyword: 'dog',
+    keyword: 'dog'
   },
   {
     title: '⊂((・⊥・))⊃',
-    keyword: 'monkey',
+    keyword: 'monkey'
   },
   {
     title: '（・⊝・）',
-    keyword: 'penguin',
+    keyword: 'penguin'
   },
   {
     title: '§・ω・§',
-    keyword: 'sheep',
+    keyword: 'sheep'
   },
   {
     title: '/|\\( ;,;)/|\\',
-    keyword: 'bat',
+    keyword: 'bat'
   },
   {
     title: '-o,,o,,o\'',
-    keyword: 'ant',
+    keyword: 'ant'
   },
   {
     title: '(*)>\n/ )  \n/"  ',
-    keyword: 'bird',
+    keyword: 'bird'
   },
   {
     title: '( )\n:(III)-\n( ) ',
-    keyword: 'bee',
+    keyword: 'bee'
   },
   {
     title: 'O_______O\n( ^ ~ ^ )\n(,,)()(,,)\n( )   ( )',
-    keyword: 'bear',
-  },
-];
+    keyword: 'bear'
+  }
+]
 
-var Example = React.createClass({
-  render: function() {
+export default class App extends Component {
+  render () {
     return (
-      <Parallax.ScrollView style={styles.scrollView}>
-      {SECTIONS.map((section, i) => (
-        <Parallax.Image
-          key={i}
-          style={styles.image}
-          overlayStyle={styles.overlay}
-          source={{ uri: IMAGE_URI_PREFIX + section.keyword }}
-          parallaxFactor={PARALLAX_FACTOR}
-        >
-          <Text style={styles.title}>{section.title}</Text>
-          <Text style={styles.url}>Source: {IMAGE_URI_PREFIX + section.keyword}</Text>
-        </Parallax.Image>
-      ))}
-      </Parallax.ScrollView>
-    );
-  },
-});
 
-var styles = StyleSheet.create({
+      <Parallax.ScrollView style={styles.container}>
+        {SECTIONS.map((section, i) => (
+          <Parallax.Image
+            key={i}
+            style={styles.image}
+            overlayStyle={styles.overlay}
+            source={{ uri: IMAGE_URI_PREFIX + section.keyword }}
+            parallaxFactor={PARALLAX_FACTOR}
+          >
+            <Text style={styles.title}>{section.title}</Text>
+            <Text style={styles.url}>Source: {IMAGE_URI_PREFIX + section.keyword}</Text>
+          </Parallax.Image>
+        ))}
+      </Parallax.ScrollView>
+    )
+  }
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#F5FCFF'
+  },
+  welcome: {
+    fontSize: 20,
+    textAlign: 'center',
+    margin: 10
+  },
   image: {
-    height: IMAGE_HEIGHT,
+    height: IMAGE_HEIGHT
   },
   overlay: {
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: 'rgba(0,0,0,0.3)',
+    backgroundColor: 'rgba(0,0,0,0.3)'
   },
   title: {
     fontSize: 20,
@@ -104,11 +113,11 @@ var styles = StyleSheet.create({
     color: 'white',
     shadowOffset: {
       width: 0,
-      height: 0,
+      height: 0
     },
     shadowRadius: 1,
     shadowColor: 'black',
-    shadowOpacity: 0.8,
+    shadowOpacity: 0.8
   },
   url: {
     opacity: 0.5,
@@ -116,8 +125,6 @@ var styles = StyleSheet.create({
     position: 'absolute',
     color: 'white',
     left: 5,
-    bottom: 5,
+    bottom: 5
   }
-});
-
-module.exports = Example;
+})
