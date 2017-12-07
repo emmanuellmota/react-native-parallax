@@ -18,7 +18,7 @@ import Parallax from 'react-native-parallax'
 var IMAGE_WIDTH = Dimensions.get('window').width
 var IMAGE_HEIGHT = 500
 var PIXEL_RATIO = PixelRatio.get()
-var PARALLAX_FACTOR = 1
+var PARALLAX_FACTOR = 0.5
 
 var IMAGE_URI_PREFIX = 'https://loremflickr.com/' + (IMAGE_WIDTH * PIXEL_RATIO) + '/' + Math.round(IMAGE_HEIGHT * (1 + PARALLAX_FACTOR * 2) * PIXEL_RATIO) + '/'
 

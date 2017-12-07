@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { Animated, ScrollView } from 'react-native'
-import isArray from 'lodash/lang/isArray'
+import isArray from 'lodash/isArray'
 import ParallaxImage from './ParallaxImage'
 
 const applyPropsToParallaxImages = (children, props) => {
@@ -22,15 +22,8 @@ const applyPropsToParallaxImages = (children, props) => {
 	return children
 }
 
-type Props = {
-	scrollViewComponent: Function
-}
-type State = {
-	scrollY: Animated.Value
-}
-
-class ParallaxScrollViewComposition extends React.Component<Props, State> {
-	static propTypes: {
+class ParallaxScrollViewComposition extends React.Component {
+	static propTypes = {
 		scrollViewComponent: PropTypes.func
 	}
 
@@ -60,9 +53,9 @@ class ParallaxScrollViewComposition extends React.Component<Props, State> {
 		const ScrollComponent = scrollViewComponent || Animated.ScrollView
 		const handleScroll = onScroll
 			? event => {
-					this.onParallaxScroll(event)
-					onScroll(event)
-				}
+				this.onParallaxScroll(event)
+				onScroll(event)
+			}
 			: this.onParallaxScroll
 		return (
 			<ScrollComponent

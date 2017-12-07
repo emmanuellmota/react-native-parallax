@@ -15,19 +15,8 @@ import { isEqual } from 'lodash'
 
 const WINDOW_HEIGHT = Dimensions.get('window').height
 
-type Props = {
-	parallaxFactor: number
-}
-
-type State = {
-	isLayoutStale: boolean,
-	offset: number,
-	height: number,
-	width: number
-}
-
-class ParallaxImage extends React.Component<Props, State> {
-	static propTypes: {
+class ParallaxImage extends React.Component {
+	static propTypes = {
 		onPress: PropTypes.func,
 		scrollY: PropTypes.object,
 		parallaxFactor: PropTypes.number,
@@ -35,7 +24,7 @@ class ParallaxImage extends React.Component<Props, State> {
 		overlayStyle: ViewPropTypes.style
 	}
 
-	constructor(props: Props) {
+	constructor(props) {
 		super(props)
 		this.state = {
 			isLayoutStale: true,
@@ -45,14 +34,14 @@ class ParallaxImage extends React.Component<Props, State> {
 		}
 	}
 
-	componentWillReceiveProps(nextProps: Props) {
+	componentWillReceiveProps(nextProps) {
 		if (!isEqual(nextProps, this.props)) {
 			this.setState({ isLayoutStale: true })
 		}
 	}
 
 	// Measure again since onLayout event won't pass the offset
-	handleLayout = (event: Event) => {
+	handleLayout = (event) => {
 		if (this.state.isLayoutStale) {
 			;(this._touchable || this._container).measure(this.handleMeasure)
 		}
