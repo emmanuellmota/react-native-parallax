@@ -13,7 +13,7 @@ import {
   PixelRatio
 } from 'react-native'
 
-import Parallax from 'react-native-parallax'
+import Parallax from 'react-native-scroll-view-parallax'
 
 var IMAGE_WIDTH = Dimensions.get('window').width
 var IMAGE_HEIGHT = 500

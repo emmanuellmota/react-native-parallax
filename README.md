@@ -1,11 +1,11 @@
-# react-native-parallax
+# react-native-scroll-view-parallax
 
 **NOTE: This module requires React Native 0.8+**
 
 ## Installation
 
 ```
-npm install --save react-native-parallax
+npm install --save react-native-scroll-view-parallax
 ```
 
 ## Usage
@@ -13,23 +13,26 @@ npm install --save react-native-parallax
 *Note: `Parallax.Image` elements must be direct descendants of `Parallax.ScrollView`*
 
 ```js
-var Parallax = require('react-native-parallax');
+import Parallax from 'react-native-scroll-view-parallax'
 
-var ParallaxView = React.createClass({
-  render: function() {
+export default class App extends Component {
+  render () {
     return (
-      <Parallax.ScrollView>
-        <Parallax.Image
-          style={{ height: 200 }}
-          overlayStyle={{ backgroundColor: 'rgba(0,0,0,0.3)'}}
-          source={{ uri: 'http://loremflickr.com/640/480' }}
-        >
-          <Text>This is optional overlay content</Text>
-        </Parallax.Image>
+      <Parallax.ScrollView style={styles.container}>
+          <Parallax.Image
+            style={styles.image}
+            overlayStyle={styles.overlay}
+            source={{ uri: 'http://loremflickr.com/640/480' }}
+            parallaxFactor={0.5}
+          >
+            <Text>This is optional overlay content</Text>
+          </Parallax.Image>
+        ))}
       </Parallax.ScrollView>
-    );
-  },
-});
+    )
+  }
+}
+
 ```
 
 ## `Parallax.ScrollView` Properties
