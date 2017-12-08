@@ -71,7 +71,7 @@ class ParallaxImage extends React.Component {
 		const parallaxPadding = height * parallaxFactor
 
 		const parallaxStyle = {
-			height: height + parallaxPadding * 2,
+			height: height + parallaxPadding,
 			width: width
 		}
 
@@ -94,12 +94,12 @@ class ParallaxImage extends React.Component {
 				style={[style, styles.container]}
 				onLayout={this.handleLayout}
 			>
-				<Animated.Image
-					{...props}
-					style={[imageStyle, parallaxStyle]}
-					pointerEvents="none"
-				/>
-				<View style={[styles.overlay, overlayStyle]}>{children}</View>
+        <Animated.Image
+          {...props}
+          style={[imageStyle, styles.overlay, parallaxStyle]}
+          pointerEvents="none"
+        />
+        <View style={[overlayStyle]}>{children}</View>
 			</View>
 		)
 		// Since we can't allow nested Parallax.Images, we supply this shorthand to wrap a touchable
@@ -124,7 +124,6 @@ var styles = StyleSheet.create({
 		position: 'relative'
 	},
 	overlay: {
-		flex: 1,
 		position: 'absolute',
 		top: 0,
 		left: 0,
@@ -134,3 +133,4 @@ var styles = StyleSheet.create({
 })
 
 module.exports = ParallaxImage
+
