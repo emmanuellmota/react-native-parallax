@@ -98,10 +98,10 @@ class ParallaxImage extends React.Component {
 			>
         <Animated.Image
           {...props}
-          style={[imageStyle, autoHeight ? styles.overlay : { flex: 1 }, parallaxStyle]}
+          style={autoHeight ? [imageStyle, styles.overlay, parallaxStyle] : [imageStyle, parallaxStyle]}
           pointerEvents="none"
         />
-        <View style={[overlayStyle, !autoHeight ? styles.overlay : {}]}>{children}</View>
+        <View style={autoHeight ? [overlayStyle] : [styles.overlay, { flex: 1 } , overlayStyle]}>{children}</View>
 			</View>
     )
 
@@ -136,3 +136,4 @@ var styles = StyleSheet.create({
 })
 
 module.exports = ParallaxImage
+
