@@ -68,7 +68,6 @@ class ParallaxImage extends React.Component {
 			overlayStyle,
       children,
       autoHeight,
-      source,
 			...props
 		} = this.props
 		const parallaxPadding = height * parallaxFactor
@@ -91,7 +90,7 @@ class ParallaxImage extends React.Component {
 			parallaxStyle.transform = [{ translateY: -parallaxPadding }]
 		}
 
-		var content = autoHeight ? (
+		var content = (
 			<View
 				ref={component => (this._container = component)}
 				style={[style, styles.container]}
@@ -99,25 +98,13 @@ class ParallaxImage extends React.Component {
 			>
         <Animated.Image
           {...props}
-          style={[imageStyle, styles.overlay, parallaxStyle]}
+          style={[imageStyle, autoHeight ? styles.overlay : { flex: 1 }, parallaxStyle]}
           pointerEvents="none"
         />
-        <View style={[overlayStyle]}>{children}</View>
-			</View>
-		) : (
-      <View
-				ref={component => (this._container = component)}
-				style={[style, styles.container]}
-				onLayout={this.handleLayout}
-			>
-        <Animated.Image
-          {...props}
-          style={[imageStyle, { flex: 1 }, parallaxStyle]}
-          pointerEvents="none"
-        />
-				<View style={[styles.overlay, overlayStyle]}>{children}</View>
+        <View style={[overlayStyle, !autoHeight ? styles.overlay : {}]}>{children}</View>
 			</View>
     )
+
 		// Since we can't allow nested Parallax.Images, we supply this shorthand to wrap a touchable
 		// around the element
 		if (onPress) {
