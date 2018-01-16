@@ -25,6 +25,10 @@ class ParallaxImage extends React.Component {
     autoHeight: PropTypes.bool
 	}
 
+  static defaultProps = {
+    parallaxFactor: 0.2,
+  };
+
 	constructor(props) {
 		super(props)
 		this.state = {
